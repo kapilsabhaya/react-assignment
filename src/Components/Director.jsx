@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Subordinate from './Subordinate';
 import { HiOutlineDotsHorizontal } from 'react-icons/hi';
 
@@ -25,7 +25,7 @@ function Director() {
             backgroundColor: 'transparent',
           }}
           type="button"
-          data-bs-toggle="dropdown" 
+          data-bs-toggle="dropdown"
           aria-expanded="false"
         >
           <HiOutlineDotsHorizontal />
@@ -59,4 +59,4 @@ function Director() {
   );
 }
 
-export default Director
+export default Director;
