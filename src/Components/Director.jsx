@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Subordinate from './Subordinate';
+import { HiOutlineDotsHorizontal } from 'react-icons/hi';
 
 function Director() {
   const [subordinateList, setsubordinateList] = useState([]);
@@ -17,21 +18,17 @@ function Director() {
         className="btn-group dropend text-center border rounded-1 position-relative d-flex justify-content-center align-items-center mx-auto"
         style={{ width: '150px', height: '70px' }}
       >
-        <h5 className="card-title">Director</h5>
+        <h5 className="card-title mb-0">Director</h5>
         <button
           style={{
-            position: 'absolute',
-            right: '10px',
-            bottom: '0px',
             border: 'none',
             backgroundColor: 'transparent',
           }}
-          className="fs-4"
           type="button"
-          data-bs-toggle="dropdown"
+          data-bs-toggle="dropdown" 
           aria-expanded="false"
         >
-          ...
+          <HiOutlineDotsHorizontal />
         </button>
         <ul
           className="dropdown-menu text-center director-dropdown-menu"
@@ -62,4 +59,4 @@ function Director() {
   );
 }
 
-export default Director;
+export default Director
