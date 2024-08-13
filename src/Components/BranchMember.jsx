@@ -9,7 +9,7 @@ function BranchMember({ id }) {
 
     return (
         <div className="card p-2 mb-2 BranchMember">
-            <div className="d-flex justify-content-between align-items-center">
+            <div className={`d-flex justify-content-between align-items-center ${Boolean(subBranchesList?.length) ? "pb-2" : ""}`}>
                 <span>Branch Member {id}</span>
                 <button className="btn btn-sm btn-info" onClick={addSubBranch}>Add Sub Branch</button>
             </div>
