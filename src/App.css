@@ -1,0 +1,31 @@
+.node {
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.director {
+  background-color: #f8f9fa;
+}
+
+.subordinate {
+  background-color: #e9ecef;
+  margin-left: 20px;
+}
+
+.member {
+  background-color: #dee2e6;
+  margin-left: 40px;
+}
+
+.menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+}
+
+button {
+  margin-left: 5px;
+}
