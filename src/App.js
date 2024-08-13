@@ -4,8 +4,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import Director from './Components/Director';
 
-
-
 function App() {
   return (
     <div className="container py-5">
