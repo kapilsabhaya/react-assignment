@@ -4,12 +4,17 @@ import { HiOutlineDotsHorizontal } from 'react-icons/hi';
 
 function Director() {
   const [subordinateList, setsubordinateList] = useState([]);
+  const [count, setCount] = useState(0);
 
   const addSubordinate = () => {
-    setsubordinateList([
-      ...subordinateList,
-      { id: subordinateList.length + 1, members: [] },
-    ]);
+    let c1 = count + 1;
+    setCount(c1);
+    // eslint-disable-next-line prettier/prettier
+    setsubordinateList([...subordinateList, { id: c1, members: [] }]);
+  };
+
+  const removeSubordinate = (id) => {
+    setsubordinateList(subordinateList?.filter((x) => x?.id != id));
   };
 
   return (
@@ -51,7 +56,7 @@ function Director() {
       <div className="row pt-4">
         {subordinateList?.map((subordinate, index) => (
           <div className="col-12 col-md-6 mb-3" key={index}>
-            <Subordinate id={subordinate.id} />
+            <Subordinate id={subordinate.id} onRemove={removeSubordinate} />
           </div>
         ))}
       </div>

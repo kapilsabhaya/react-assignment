@@ -1,21 +1,36 @@
 import { useState } from 'react';
 import BranchMember from './BranchMember';
-import { FaCirclePlus } from 'react-icons/fa6';
+import { FaCircleMinus, FaCirclePlus } from 'react-icons/fa6';
 import PropTypes from 'prop-types';
 
-function Subordinate({ id }) {
+function Subordinate({ id, onRemove }) {
   const [memberList, setMemberList] = useState([]);
   const [subBranchesList, setSubBranchesList] = useState([]);
+  const [count, setCount] = useState(0);
+  const [memberCount, setMemberCount] = useState(0);
 
   const addMember = () => {
-    setMemberList([...memberList, memberList?.length + 1]);
+    let c1 = memberCount + 1;
+    setMemberCount(c1);
+    setMemberList([...memberList, c1]);
+  };
+
+  const removeMember = (id) => {
+    setMemberList(memberList?.filter((x) => x != id));
   };
 
   const addSubBranch = () => {
+    let c1 = count + 1;
+    setCount(c1);
     setSubBranchesList([
       ...subBranchesList,
-      { id: `${id}/${subBranchesList?.length + 1}` },
+      { id: `${id}/${c1}`, parentId: id },
     ]);
+  };
+
+  const removeSubordinate = (id) => {
+    // Remove the subordinate and all its children
+    setSubBranchesList(subBranchesList?.filter((x) => !x.id.startsWith(id)));
   };
 
   return (
@@ -28,6 +43,11 @@ function Subordinate({ id }) {
           <FaCirclePlus
             style={{ fontSize: '20px', color: 'green', cursor: 'pointer' }}
             onClick={addMember}
+            className="ms-2"
+          />
+          <FaCircleMinus
+            style={{ fontSize: '20px', color: 'red', cursor: 'pointer' }}
+            onClick={() => onRemove(id)}
             className="ms-2"
           />
           <button
@@ -58,30 +78,30 @@ function Subordinate({ id }) {
           </ul>
         </div>
       </div>
-      {/* <div className="mb-2">
-                <button className="btn btn-secondary me-2" onClick={addSubBranch}>Add Subordinate</button>
-                <button className="btn btn-success" onClick={addMember}>Add Member</button>
-            </div> */}
       <div className="row">
         {memberList?.map((member, index) => (
           <div className="col-12" key={index}>
-            <BranchMember id={`${id}/${member}`} />
+            <BranchMember id={`${id}/${member}`} onRemove={removeMember} />
           </div>
         ))}
       </div>
-      <div className="row">
-        {subBranchesList?.map((branch, index) => (
-          <div className="col-12" key={index}>
-            <Subordinate id={branch?.id} />
-          </div>
-        ))}
-      </div>
+      {
+        <div className="row">
+          {subBranchesList?.map((branch, index) =>
+            branch?.parentId == id ? (
+              <div className="col-12" key={index}>
+                <Subordinate id={branch?.id} onRemove={removeSubordinate} />
+              </div>
+            ) : null,
+          )}
+        </div>
+      }
     </div>
   );
 }
 
 Subordinate.propTypes = {
-  id: PropTypes.number.isRequired,
+  id: PropTypes.string.isRequired,
 };
 
 export default Subordinate;
