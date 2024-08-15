@@ -87,6 +87,8 @@
 // export default OrgChart;
 
 import { useState } from 'react';
+import { FaCircleMinus, FaCirclePlus } from 'react-icons/fa6';
+import { HiOutlineDotsHorizontal } from 'react-icons/hi';
 
 const initialData = {
   id: 1,
@@ -107,77 +109,155 @@ const OrgChart = () => {
         key={node.id}
         className={`${node?.name?.length == '13' || node?.name?.length == '14' ? 'col-6' : 'col-12'}`}
       >
-        <div
-          style={{
-            marginLeft: '20px',
-            border: '1px solid black',
-            padding: '10px',
-          }}
-        >
-          <div
-            className={`${node.name == 'Director' ? 'd-flex justify-content-center my-2' : 'my-2'}`}
-          >
+        <div style={{ paddingLeft: '20px', paddingRight: '20px' }}>
+          <div className="border rounded-1 my-2">
             <div
-              className={`"btn-group dropend text-center border rounded-1 position-relative mx-auto"`}
+              className={`btn-group dropend text-center position-relative mx-auto d-flex align-items-center ${node.name == 'Director' ? 'justify-content-center' : 'justify-content-between'}`}
               style={
                 node.name == 'Director'
-                  ? { width: '150px', height: '70px', padding: '10px 0' }
-                  : { padding: '10px 0' }
+                  ? {
+                      width: '150px',
+                      height: '70px',
+                      padding: '10px',
+                      borderRadius: '0.25rem',
+                      margin: '20px 0',
+                      border: '1px solid #dee2e6',
+                    }
+                  : { padding: '10px' }
               }
             >
-              {node.name}
-              <div>
-                <button onClick={() => addSubBranch(node.id)}>
-                  {node?.name?.startsWith('Branch Member')
-                    ? 'Add Sub Branch Member'
-                    : 'Add a Subordinate'}
-                </button>
+              <h6
+                className={`${node?.name?.startsWith('Branch Member') ? 'fw-normal' : ''} mb-0`}
+              >
+                {node.name}{' '}
                 {node?.name?.startsWith('Branch Member') ||
                 node?.name == 'Director' ? (
                   <></>
                 ) : (
                   <>
-                    <button onClick={() => addMember(node.id)}>
-                      Add Branch Member
-                    </button>
+                    <FaCirclePlus
+                      style={{
+                        fontSize: '20px',
+                        color: 'green',
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => addMember(node.id)}
+                      className="ms-2"
+                    />
                   </>
                 )}
-                {node.id !== 1 && (
-                  <button onClick={() => removeNode(node.id)}>Remove</button>
+                {node.id != 1 && (
+                  <FaCircleMinus
+                    style={{
+                      fontSize: '20px',
+                      color: 'red',
+                      cursor: 'pointer',
+                    }}
+                    onClick={() => removeNode(node.id)}
+                    className="ms-2"
+                  />
                 )}
-              </div>
+              </h6>
               <div>
-                {node.members.length > 0 && (
-                  <ul>
-                    {node.members.map((member) => (
-                      <li key={member.id} style={{ marginLeft: '20px' }}>
-                        {member.name}
-                        <button
-                          onClick={() => addSubBranchMember(node.id, member.id)}
-                          style={{ marginLeft: '10px' }}
-                        >
-                          Add Sub Branch Member
-                        </button>
-                        <button
-                          onClick={() => removeMember(node.id, member.id)}
-                          style={{ marginLeft: '10px' }}
-                        >
-                          Remove Member
-                        </button>
-                        <div>
-                          {member.subBranch.map((subMember) =>
-                            renderTree(subMember),
-                          )}
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                )}
+                <button
+                  style={{
+                    border: 'none',
+                    backgroundColor: 'transparent',
+                  }}
+                  type="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <HiOutlineDotsHorizontal />
+                </button>
+                <ul
+                  className="dropdown-menu text-center director-dropdown-menu"
+                  style={{ width: '250px' }}
+                >
+                  <li>
+                    <div
+                      className="px-2"
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => addSubBranch(node.id)}
+                    >
+                      {node?.name?.startsWith('Branch Member')
+                        ? 'Add a New Sub Branch Member'
+                        : 'Add a New Subordinate Branch'}
+                    </div>
+                  </li>
+                </ul>
+                {/* <button onClick={() => addSubBranch(node.id)}>
+                  {node?.name?.startsWith('Branch Member')
+                    ? 'Add Sub Branch Member'
+                    : 'Add a Subordinate'}
+                </button> */}
               </div>
             </div>
-          </div>
-          <div className="row">
-            {node.subBranch && node.subBranch.map((child) => renderTree(child))}
+            {node.members.length > 0 && (
+              <div style={{ margin: '0px 8px 20px 0', padding: '0 20px' }}>
+                <div>
+                  {node.members.map((member) => (
+                    <div
+                      key={member.id}
+                      className="border rounded-1 p-2 px-3 my-3"
+                    >
+                      <div className="d-flex justify-content-between align-items-center">
+                        <h6 className="mb-0 fw-normal">
+                          {member.name}
+                          <FaCircleMinus
+                            style={{
+                              fontSize: '20px',
+                              color: 'red',
+                              cursor: 'pointer',
+                            }}
+                            onClick={() => removeMember(node.id, member.id)}
+                            className="ms-2"
+                          />
+                        </h6>
+                        <div>
+                          <button
+                            style={{
+                              border: 'none',
+                              backgroundColor: 'transparent',
+                            }}
+                            type="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                          >
+                            <HiOutlineDotsHorizontal />
+                          </button>
+                          <ul
+                            className="dropdown-menu text-center director-dropdown-menu"
+                            style={{ width: '250px' }}
+                          >
+                            <li>
+                              <div
+                                className="px-2"
+                                style={{ cursor: 'pointer' }}
+                                onClick={() =>
+                                  addSubBranchMember(node.id, member.id)
+                                }
+                              >
+                                Add Sub Branch Member
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div>
+                        {member.subBranch.map((subMember) =>
+                          renderTree(subMember),
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            <div className="row">
+              {node.subBranch &&
+                node.subBranch.map((child) => renderTree(child))}
+            </div>
           </div>
         </div>
       </div>
@@ -217,11 +297,12 @@ const OrgChart = () => {
 
     const addMemberRecursively = (node) => {
       if (node.id === nodeId) {
+        const parentId = node?.name?.split(' ')?.[1];
         const newMember = {
           id: new Date().getTime(),
           name: node?.name?.startsWith('Branch Member')
             ? `${node?.name}/${node.memberCount + 1}`
-            : `Branch Member ${node.memberCount + 1}`,
+            : `Branch Member ${parentId ? parentId + '/' : ''}${node.memberCount + 1}`,
           subBranch: [],
           members: [],
           memberCount: 0,
@@ -312,7 +393,7 @@ const OrgChart = () => {
     setTreeData(newTree);
   };
 
-  return <div className="row">{renderTree(treeData)}</div>;
+  return <div className="row mx-0">{renderTree(treeData)}</div>;
 };
 
 export default OrgChart;
